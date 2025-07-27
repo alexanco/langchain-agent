@@ -1,18 +1,18 @@
 import os
 import pandas as pd
-from services.agent_dataframe import AgenteDataFrame
+from services.agent_dataframe import AgentDataFrame
 from dotenv import load_dotenv
 
 # Cria a llm e recupera o token do secrets
 from langchain_groq import ChatGroq
 
-class Executor:
+class AgentExecutor:
     _instance = None
     _initialized = False
 
     def __new__(cls):
         if cls._instance is None:
-            cls._instance = super(Executor, cls).__new__(cls)
+            cls._instance = super(AgentExecutor, cls).__new__(cls)
         return cls._instance
 
     def __init__(self) -> None:
@@ -31,14 +31,14 @@ class Executor:
 
             self.__API_KEY = os.getenv("GROQ_API_KEY")
             self.__llm = ChatGroq(temperature=0, groq_api_key=self.__API_KEY, model_name='llama3-70b-8192')
-            self.__agent_df = AgenteDataFrame(llm=self.__llm, df=self.__df)
-            
-            Executor._initialized = True
-    
-    
-    def executar(self, question: str) -> dict[str, str]:
+            self.__agent_df = AgentDataFrame(llm=self.__llm, df=self.__df, isDebug=False)
+
+            AgentExecutor._initialized = True
+
+
+    def execute(self, question: str) -> dict[str, str]:
         """
         Executa a pergunta no agente e retorna a resposta.
         """
-        resposta = self.__agent_df.executar(question)
-        return {"output": resposta['output']}
+        response = self.__agent_df.execute(question)
+        return {"output": response['output']}

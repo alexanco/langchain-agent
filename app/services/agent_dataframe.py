@@ -8,9 +8,7 @@ from langchain_core.language_models.chat_models import BaseChatModel
 from typing import Type
 
 
-
-
-class AgenteDataFrame:
+class AgentDataFrame:
 
     # Vamos utilizar injeção de dependência no construtor, para conseguimos,
     # trocar a LLM usada e o DataFrame sem ter que alterar nosso código do
@@ -20,7 +18,7 @@ class AgenteDataFrame:
         self.__llm = llm
         set_debug(isDebug)
 
-    # Não vamos criar do zero a ferramenta o LangChain tem várias prontas! :)
+    # LangChain tem várias prontas! :)
     # https://python.langchain.com/docs/integrations/tools/
     @property
     def ferramentas(self) -> None:
@@ -88,15 +86,15 @@ class AgenteDataFrame:
                         Thought: {agent_scratchpad}"""
                 )
 
-    def executar(self, question:str) -> dict[str,str]:
+    def execute(self, question:str) -> dict[str,str]:
         """
         Executa o agente com a entrada fornecida.
         """
         try:
-            agente = create_react_agent(llm=self.__llm, tools=self.ferramentas, prompt=self.react_prompt)
-            executor = AgentExecutor(agent=agente, tools=self.ferramentas, handle_parsing_errors=True)
-            resposta = executor.invoke({"input": question})
-            return resposta
+            agent = create_react_agent(llm=self.__llm, tools=self.ferramentas, prompt=self.react_prompt)
+            executor = AgentExecutor(agent=agent, tools=self.ferramentas, handle_parsing_errors=True)
+            response = executor.invoke({"input": question})
+            return response
         except Exception as e:
             print(f"Erro ao executar o agente: {e}")
             return {"error": str(e)}
