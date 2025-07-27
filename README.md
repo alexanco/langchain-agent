@@ -63,7 +63,7 @@ OPENAI_API_KEY=sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 ### 4. Baixando o dataset
 ```
-cd app/data
+cd app/data/csv_files
 wget https://middleware.datah.ai/Placement_Data_Full_Class.csv
 ```
 
