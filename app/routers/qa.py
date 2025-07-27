@@ -16,7 +16,7 @@ async def ask_question(request: QuestionRequest) -> dict:
     # Use o agente para gerar a resposta. O método `invoke` aceita um dicionário
     # com a chave "input" para o agente do LangChain.
     try:
-        result = agentExecutor.execute(request.question)
+        result = agentExecutor.execute(request.question, request.csv_file)
     except Exception as e:
         # Trate exceções específicas se desejar
         raise HTTPException(status_code=500, detail=str(e))
