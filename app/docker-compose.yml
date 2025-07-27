@@ -9,4 +9,5 @@ services:
       - .:/app
     environment:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - GROQ_API_KEY=${GROQ_API_KEY}
     restart: unless-stopped

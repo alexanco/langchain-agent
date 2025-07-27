@@ -1,6 +1,7 @@
 from fastapi import APIRouter, HTTPException
 from models.question import QuestionRequest
 # from services.agent import get_agent_executor
+from services.executor import Executor
 
 router = APIRouter()
 
@@ -11,17 +12,15 @@ async def ask_question(request: QuestionRequest) -> dict:
         raise HTTPException(status_code=400, detail="Pergunta não pode ser vazia")
 
     # Inicializa (ou reutiliza) o agente
-    # agent_executor = get_agent_executor()
+    agentExecutor = Executor()
 
     # Use o agente para gerar a resposta. O método `invoke` aceita um dicionário
     # com a chave "input" para o agente do LangChain.
-    # try:
-    #     result = agent_executor.invoke({"input": request.question})
-    # except Exception as e:
-    #     # Trate exceções específicas se desejar
-    #     raise HTTPException(status_code=500, detail=str(e))
+    try:
+        result = agentExecutor.executar(request.question)
+    except Exception as e:
+        # Trate exceções específicas se desejar
+        raise HTTPException(status_code=500, detail=str(e))
 
     # Retorne a resposta no formato desejado
-    # return {"answer": result}
-
-    return {"answer": "Esta é uma resposta simulada para a pergunta: " + request.question}
+    return {"answer": result['output']}
